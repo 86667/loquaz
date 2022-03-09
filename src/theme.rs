@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 use druid::{Color, Data, Env, FontDescriptor, FontFamily, FontWeight, Key};
 
 // pub const ICON_COLOR: Key<Color> = Key::new("app.icon-color");

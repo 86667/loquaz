@@ -64,7 +64,8 @@ impl Icon {
             hover_color: theme::ICON_COLOR.into(),
         }
     }
-
+    
+    #[allow(dead_code)]
     pub fn set_color(&mut self, color: impl Into<KeyOrValue<Color>>) {
         self.color = color.into();
     }

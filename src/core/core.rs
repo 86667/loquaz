@@ -12,6 +12,7 @@ use tokio::sync::broadcast;
 
 //####### Core Task Handle Errors  #########
 #[derive(Debug, Error)]
+#[allow(dead_code)]
 pub enum CoreTaskHandleError {
     #[error("Adding new relay failed")]
     AddRelayFailed,
@@ -24,8 +25,8 @@ pub enum CoreTaskHandleError {
 }
 
 //####### Core Task Handle  #########
-
 #[derive(Debug)]
+#[allow(dead_code)]
 pub enum CoreTaskHandleEvent {
     ReceivedEvent { ev: Event },
     RelayAdded(Result<(), CoreTaskHandleError>),
@@ -126,25 +127,22 @@ impl CoreTaskHandle {
             self.relay_pool.send_ev(new_ev.unwrap()).await;
         }
     }
-
+    #[allow(dead_code)]
     pub fn get_noti_ch(&self) -> broadcast::Receiver<RelayPoolNotifications> {
         return self.relay_pool.get_notifications_ch();
     }
 
     pub async fn add_relay(&mut self, url: String) -> CoreTaskHandleEvent {
         self.relay_pool.add(&url);
-        self.config
+        CoreTaskHandleEvent::RelayAdded(self.config
             .add_relay(url)
-            .map_err(|_| CoreTaskHandleError::AddRelayFailed);
-
-        CoreTaskHandleEvent::RelayAdded(Ok(()))
+            .map_err(|_| CoreTaskHandleError::AddRelayFailed))
     }
 
     pub async fn remove_relay(&mut self, url: String) -> CoreTaskHandleEvent {
-        self.config
+        CoreTaskHandleEvent::RemovedRelay(self.config
             .remove_relay(&url)
-            .map_err(|_| CoreTaskHandleError::AddRelayFailed);
-        CoreTaskHandleEvent::RemovedRelay(Ok(()))
+            .map_err(|_| CoreTaskHandleError::RemoveRelayFailed))
     }
 
     pub async fn connect_relay(&mut self, url: String) {

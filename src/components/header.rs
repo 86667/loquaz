@@ -1,6 +1,6 @@
-use druid::{widget::Label, Color, Data, Insets, Widget, WidgetExt};
+use druid::{widget::Label, Data, Widget};
 
-use crate::theme::{MONO_FONT, MONO_FONT_BOLD, TEXT_4XL};
+use crate::theme::{MONO_FONT_BOLD, TEXT_4XL};
 
 pub fn jumbo_header<T: Data>(text: &str) -> impl Widget<T> {
     Label::new(text)

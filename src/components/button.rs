@@ -1,4 +1,4 @@
-use druid::{widget::Label, Color, Data, Insets, TextAlignment, Widget, WidgetExt};
+use druid::{widget::Label, Color, Data, Insets, Widget, WidgetExt};
 
 use crate::theme::{COLOR_RED, MONO_FONT};
 

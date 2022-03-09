@@ -1,12 +1,9 @@
 use secp256k1::schnorrsig::PublicKey;
 use serde::{Deserialize, Serialize};
 
-use std::{
-    collections::HashMap,
-    fs::{self, File},
-    io::{BufReader, Error},
-    path::PathBuf,
-};
+use std::{collections::HashMap, fs::{self, File}, io::{BufReader, Error, ErrorKind}, path::PathBuf};
+
+use super::conversations::ConversationsError;
 
 const NOSTR_DIR_NAME: &str = r".nostr_chat";
 const CONFIG_FILENAME: &str = "config.json";
@@ -44,18 +41,18 @@ impl ConfigProvider {
         self.relays_url.remove(relay_url);
         self.save()
     }
-
+    #[allow(dead_code)]
     pub fn delete_contact(&mut self, pk: &str) {
         self.contacts.remove(pk);
         self.save().unwrap();
     }
 
     pub fn list_contacts(&self) -> Vec<Contact> {
-        self.contacts.iter().map(|(k, v)| v.to_owned()).collect()
+        self.contacts.iter().map(|(_k, v)| v.to_owned()).collect()
     }
 
     pub fn list_relays_url(&self) -> Vec<String> {
-        self.relays_url.iter().map(|(k, v)| v.to_owned()).collect()
+        self.relays_url.iter().map(|(_k, v)| v.to_owned()).collect()
     }
 
     pub fn save(&self) -> Result<(), Error> {
@@ -63,14 +60,13 @@ impl ConfigProvider {
         let relays_url: Vec<String> = self.list_relays_url();
         let config_file = Config::new(contacts, relays_url);
         let serialized = serde_json::to_string_pretty(&config_file)?;
-        let config_path = Self::get_path();
 
         std::fs::write(Self::get_config_path(), serialized)?;
         Ok(())
     }
 
     pub fn load() -> Self {
-        let mut dir = Self::get_path();
+        let dir = Self::get_path();
         fs::create_dir_all(&dir);
         let file = File::open(&Self::get_config_path());
 

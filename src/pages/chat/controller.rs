@@ -1,8 +1,8 @@
 use druid::{
     im::Vector,
     keyboard_types::Key,
-    widget::{Controller, Scroll, TextBox},
-    Data, Env, Event, EventCtx, Rect, UpdateCtx, Widget,
+    widget::{Controller, Scroll},
+    Data, Env, Event, EventCtx, UpdateCtx, Widget,
 };
 
 use crate::{
@@ -14,7 +14,6 @@ use crate::{
 };
 
 pub struct ChatController {}
-
 impl ChatController {
     pub fn click_send_msg(ctx: &mut EventCtx, data: &mut AppState, _env: &Env) {
         // TODO if we disable the send box when no convo is selected we don't need this guard
@@ -23,10 +22,11 @@ impl ChatController {
             let content = data.msg_to_send.clone();
             //TODO: Use chat new message instead
             ctx.submit_command(SEND_MSG.with(NewMessage::new(&pk, &content)));
-
+            
             data.msg_to_send = "".into();
         }
     }
+    #[allow(dead_code)]
     pub fn click_start_chat(ctx: &mut EventCtx, data: &mut ContactState, _env: &Env) {
         ctx.submit_command(START_CHAT.with(data.pk.clone()));
     }
@@ -64,7 +64,7 @@ impl<W: Widget<AppState>> Controller<AppState, W> for OnEnterController {
             _ => {}
         }
 
-        if (!ctx.is_handled()) {
+        if !ctx.is_handled() {
             child.event(ctx, event, data, env);
         }
     }

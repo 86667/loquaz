@@ -31,7 +31,7 @@ async fn main() {
     //Init state
     let mut init_state = AppState::new();
     //Channel sender from druid app to broker
-    let (sender, mut receiver) = tokio::sync::mpsc::channel(32);
+    let (sender, receiver) = tokio::sync::mpsc::channel(32);
     init_state.sender_broker = Arc::new(Some(sender));
 
     //Spawn broker

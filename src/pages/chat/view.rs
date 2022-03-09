@@ -1,7 +1,7 @@
 use druid::{
     theme::{PRIMARY_DARK, PRIMARY_LIGHT, WINDOW_BACKGROUND_COLOR},
     widget::{CrossAxisAlignment, Either, Flex, Label, List, Maybe, Painter, Scroll, TextBox},
-    Color, Env, LensExt, RenderContext, UnitPoint, Widget, WidgetExt,
+    Color, Env, LensExt, RenderContext, Widget, WidgetExt,
 };
 
 use crate::{
@@ -86,7 +86,7 @@ fn chat_conversation() -> impl Widget<ConversationState> {
 
 fn chat_message() -> impl Widget<MessageState> {
     Either::new(
-        |data: &MessageState, env: &Env| data.source == MessageSourceState::Them,
+        |data: &MessageState, _env: &Env| data.source == MessageSourceState::Them,
         {
             let text = Label::raw()
                 .with_line_break_mode(druid::widget::LineBreaking::WordWrap)
@@ -116,7 +116,7 @@ fn chat_message() -> impl Widget<MessageState> {
 }
 
 fn chat_contact_item() -> impl Widget<ContactState> {
-    let painter = Painter::new(move |ctx, data: &ContactState, env| {
+    let painter = Painter::new(move |ctx, _data: &ContactState, env| {
         // let selected = data.is_selected;
         let selected = true;
 

@@ -22,11 +22,11 @@ pub struct Delegate;
 impl AppDelegate<AppState> for Delegate {
     fn command(
         &mut self,
-        ctx: &mut druid::DelegateCtx,
-        target: druid::Target,
+        _ctx: &mut druid::DelegateCtx,
+        _target: druid::Target,
         cmd: &druid::Command,
         data: &mut AppState,
-        env: &druid::Env,
+        _env: &druid::Env,
     ) -> druid::Handled {
         if let Some(note) = cmd.get(BROKER_NOTI) {
             match note {

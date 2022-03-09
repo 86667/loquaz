@@ -36,7 +36,7 @@ impl RelayPoolTask {
                 match msg {
                     RelayMessage::Event {
                         event,
-                        subscription_id,
+                        subscription_id: _,
                     } => {
                         //Verifies if the event is valid
                         if let Ok(_) = event.verify() {
@@ -72,7 +72,7 @@ async fn start_relay_pool_task(mut task: RelayPoolTask) {
         task.handle_message(msg).await;
     }
 }
-
+#[allow(dead_code)]
 pub struct RelayPool {
     relays: HashMap<String, Relay>,
     pool_task_sender: Sender<RelayPoolEv>,
@@ -80,7 +80,6 @@ pub struct RelayPool {
     notification_receiver: broadcast::Receiver<RelayPoolNotifications>,
     notification_sender: broadcast::Sender<RelayPoolNotifications>,
 }
-
 impl RelayPool {
     pub fn new() -> Self {
         let (notification_sender, notification_receiver) = broadcast::channel(64);
@@ -104,9 +103,9 @@ impl RelayPool {
             Relay::new(relay_url, self.pool_task_sender.clone()),
         );
     }
-
+    #[allow(dead_code)]
     pub fn list_relays(&self) -> Vec<Relay> {
-        self.relays.iter().map(|(k, v)| v.to_owned()).collect()
+        self.relays.iter().map(|(_k, v)| v.to_owned()).collect()
     }
     pub async fn remove_contact_events(&self, contact: Contact) {
         //TODO: Remove this convertion when change contact pk to Keys type
@@ -121,7 +120,7 @@ impl RelayPool {
             .send(RelayPoolEv::EventSent { ev: ev.clone() })
             .await;
         let relays_clone = self.relays.clone();
-        for (k, v) in relays_clone.iter() {
+        for (_k, v) in relays_clone.iter() {
             v.send_relay_ev(RelayEv::SendMsg(ClientMessage::new_event(ev.clone())))
                 .await;
         }

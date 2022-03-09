@@ -1,5 +1,5 @@
 use druid::{
-    im::{vector, Vector},
+    im::{Vector},
     Data, Lens,
 };
 

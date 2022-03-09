@@ -1,5 +1,4 @@
 use druid::{
-    text::EditableText,
     widget::{CrossAxisAlignment, Flex, Label, List, MainAxisAlignment, Scroll, TextBox},
     Data, LensExt, Widget, WidgetExt,
 };
@@ -128,7 +127,7 @@ fn pub_key() -> impl Widget<AppState> {
                     return format!("").into();
                 }
             },
-            |pk, edited_pk| *pk = format!("{}", pk),
+            |pk, _edited_pk| *pk = format!("{}", pk),
         )));
 
     let copy_pk_btn = button("Copy")

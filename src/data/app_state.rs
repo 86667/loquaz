@@ -1,5 +1,5 @@
 use druid::{
-    im::{vector, HashMap, Vector},
+    im::{HashMap},
     Data, Lens,
 };
 use secp256k1::schnorrsig::PublicKey;

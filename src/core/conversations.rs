@@ -17,7 +17,7 @@ pub enum ConversationsError {
 pub enum ConvsNotifications {
     NewMessage(Message),
 }
-
+#[allow(dead_code)]
 pub struct Conversations {
     convs: HashMap<String, Conversation>,
     conv_noti_sender: broadcast::Sender<ConvsNotifications>,
@@ -107,9 +107,9 @@ impl Conversations {
     pub fn get_mut_conv(&mut self, pk: &str) -> Option<&mut Conversation> {
         self.convs.get_mut(pk.into())
     }
-
+    #[allow(dead_code)]
     pub fn list_convs(&self) -> Vec<Conversation> {
-        self.convs.iter().map(|(k, v)| v.to_owned()).collect()
+        self.convs.iter().map(|(_k, v)| v.to_owned()).collect()
     }
 }
 

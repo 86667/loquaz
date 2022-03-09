@@ -19,6 +19,7 @@ use crate::{
     delegate::BROKER_NOTI,
 };
 
+#[allow(dead_code)]
 pub enum BrokerEvent {
     AddRelay { url: String },
     RemoveRelay { url: String },
@@ -96,11 +97,13 @@ pub async fn start_broker(
                 update_user_state(&event_sink, &core_handle);
             }
             BrokerEvent::AddRelay { url } => {
+                // TODO: handle error case?
                 if let CoreTaskHandleEvent::RelayAdded(Ok(_)) = core_handle.add_relay(url).await {
                     update_config_state(&event_sink, &core_handle).await;
                 }
             }
             BrokerEvent::RemoveRelay { url } => {
+                // TODO: handle error case?
                 if let CoreTaskHandleEvent::RemovedRelay(Ok(_)) =
                     core_handle.remove_relay(url).await
                 {
@@ -114,15 +117,15 @@ pub async fn start_broker(
                 core_handle.disconnect_relay(url).await;
             }
 
-            BrokerEvent::SubscribeInRelays { pk } => {
+            BrokerEvent::SubscribeInRelays { pk: _ } => {
                 core_handle.subscribe().await;
             }
             BrokerEvent::AddContact { new_contact } => {
-                let res = core_handle.add_contact(new_contact).await;
+                core_handle.add_contact(new_contact).await;
                 update_config_state(&event_sink, &core_handle).await;
             }
             BrokerEvent::RemoveContact { contact } => {
-                let res = core_handle.remove_contact(contact).await;
+                core_handle.remove_contact(contact).await;
                 update_config_state(&event_sink, &core_handle).await;
             }
             BrokerEvent::LoadConfigs => {
